@@ -148,10 +148,10 @@ main.js를 실행한다. main.js를 실행하면 MySQL 서버까지 자동으로
 
 4. 로그인 후 채팅 페이지로 접속한 결과  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image85.png)  
- 1. 접속한 사용자의 닉네임이 보인다.  
- 2. 처음에 접속한 사용자는 대기실이라는 방에 입장한다.  
- 3. 누군가가 방에 들어오거나 나갈 경우 서버 메시지를 보여준다.  
- 4. 현재 사용자 목록이 보이며 사용자가 현재 어디 있는 지까지 볼 수 있다.  
+ + 접속한 사용자의 닉네임이 보인다.  
+ + 처음에 접속한 사용자는 대기실이라는 방에 입장한다.  
+ + 누군가가 방에 들어오거나 나갈 경우 서버 메시지를 보여준다.  
+ + 현재 사용자 목록이 보이며 사용자가 현재 어디 있는 지까지 볼 수 있다.  
 
 
 
@@ -166,10 +166,10 @@ main.js를 실행한다. main.js를 실행하면 MySQL 서버까지 자동으로
 6. 방 입장  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image88.png)  
 
- 1. 방을 만들면 방 목록이 갱신되며 방을 만든 사람은 자동으로 그 방으로 입장된다. 방 정보에는 방 번호, 방 이름, 방에 들어간 사람의 수가 보이게 된다.
- 2. 사용자가 방을 이동하면 사용자의 위치도 갱신된다.
- 3. 방에 입장하면 현재 방 번호와 방제목이 갱신된다.
- 4. 사용자가 방에 입장했다는 메시지가 뜬다.
+ + 방을 만들면 방 목록이 갱신되며 방을 만든 사람은 자동으로 그 방으로 입장된다. 방 정보에는 방 번호, 방 이름, 방에 들어간 사람의 수가 보이게 된다.
+ + 사용자가 방을 이동하면 사용자의 위치도 갱신된다.
+ + 방에 입장하면 현재 방 번호와 방제목이 갱신된다.
+ + 사용자가 방에 입장했다는 메시지가 뜬다.
 
 
 7. 대기실과 각 방에서의 채팅
@@ -194,28 +194,28 @@ main.js를 실행한다. main.js를 실행하면 MySQL 서버까지 자동으로
 10. 파일 업로드
 업로드를 시험할 파일 목록: 텍스트, 이미지, 오디오, 동영상 파일을 시험해보고자 한다.
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image99.png)  
- 1. 파일 업로드 시 업로드 진행 상황을 막대 게이지로 표시한다.  
+ + 파일 업로드 시 업로드 진행 상황을 막대 게이지로 표시한다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image103.png)  
 
- 2. 텍스트 파일 업로드 시
+ + 텍스트 파일 업로드 시
 
 채팅 창에 다운로드 버튼이 생성되며 텍스트 파일을 미리 볼 수 있는 화면이 생긴다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image60.png)  
 
- 3. 이미지 파일 업로드 시
+ + 이미지 파일 업로드 시
 
 채팅 창에 사진 다운로드 버튼과 미리 보기 화면이 생긴다.  
 
 이미지를 새 탭에서 크게 볼 수도 있다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image61.png)  
   
- 4. 오디오 파일 업로드 시
+ + 오디오 파일 업로드 시
 
 채팅 창에 다운로드 버튼이 생기며, 바로 재생 할 수 있도록 컨트롤이 생긴다.  
 이 때 재생 버튼을 누르면 서버에서 오디오 파일을 실시간으로 스트리밍한다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image62.png)  
 
- 5. 동영상 파일 업로드 시  
+ + 동영상 파일 업로드 시  
 
 채팅 창에 다운로드 버튼이 생기며 실시간으로 재생할 수 있도록 컨트롤이 생긴다.  
 
@@ -224,11 +224,11 @@ main.js를 실행한다. main.js를 실행하면 MySQL 서버까지 자동으로
 동영상을 새 탭이나 전체화면으로 볼 수도 있다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image64.png)  
 
- 6. 파일을 받은 사용자가 다운로드 버튼을 누를 시  
+ + 파일을 받은 사용자가 다운로드 버튼을 누를 시  
 
 사진에서 보듯이,  다운로드 버튼을 누르게 되면 크롬 브라우저에서 일반 파일을 다운받는 것처럼 창 하단에 다운로드가 된다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image65.png)  
- 7. 파일을 귓속말로 주고 받기  
+ + 파일을 귓속말로 주고 받기  
 
 서로 다른 방에 있는 사용자끼리 귓속말로 파일을 전송 할 수도 있다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image67.png)  
@@ -238,10 +238,10 @@ main.js를 실행한다. main.js를 실행하면 MySQL 서버까지 자동으로
 11. 서버 로그
 
 
- 1. 사용자가 로그인하거나, 로그아웃 하거나, 방을 만들거나, 에러가 날 경우 콘솔 창과 파일에 기록을 한다.  
+ + 사용자가 로그인하거나, 로그아웃 하거나, 방을 만들거나, 에러가 날 경우 콘솔 창과 파일에 기록을 한다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image69.png)  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image68.png)  
- 2. 사용자가 욕설을 했을 때 (현재 욕설 단어는 &#39;심한욕&#39; 만 등록되어있음)  
+ + 사용자가 욕설을 했을 때 (현재 욕설 단어는 &#39;심한욕&#39; 만 등록되어있음)  
 
 사진처럼 사용자가 욕설을 하면 채팅 창에는 \*로 필터링 처리되며, 서버 로그에도 기록을 한다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image104.png)  
@@ -251,10 +251,10 @@ main.js를 실행한다. main.js를 실행하면 MySQL 서버까지 자동으로
 아래 사진과 같이 **프로그램 코드** 를 채팅 창에 그냥 보내버리면 글자도 정렬이 되지 않고, 색깔로 구분 되어 있지 않아서 읽기가 힘들다. 이를 위해 이 기능을 구현해보았다.
 
 
- 1. 코드를 그냥 보냈을 때: 코드가 정리되어 있지 않고 보기 힘들다.  
+ + 코드를 그냥 보냈을 때: 코드가 정리되어 있지 않고 보기 힘들다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image19.png)  
 
- 2. 코드를 코드 전송 기능을 이용해서 보냈을 때:  
+ + 코드를 코드 전송 기능을 이용해서 보냈을 때:  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image20.png)  
   
 코드를 볼 수 있는 창이 하나 생성 되었고 tab과 공백, 색, 글꼴이 구분되어 있어서 코드를 보기 편하다.  
@@ -262,21 +262,21 @@ main.js를 실행한다. main.js를 실행하면 MySQL 서버까지 자동으로
 
 13. 예외 처리
 
- **1** 사용자가 엉뚱한 페이지를 입력했을 경우  
+ + 사용자가 엉뚱한 페이지를 입력했을 경우  
 404에러를 보내며 요청한 페이지가 없다는 메시지를 남긴다.  
 
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image21.png)  
 
- **2** 이미 해당 사용자가 로그인 되어있거나 로그인도 하지 않고 채팅 서버에 접속을 시도하는 경우 아래와 같은 메시지를 띄운다.  
+ + 이미 해당 사용자가 로그인 되어있거나 로그인도 하지 않고 채팅 서버에 접속을 시도하는 경우 아래와 같은 메시지를 띄운다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image22.png)  
 
 
- **3** 자기 자신을 전송 대상(귓속말 대상)에 추가하려는 경우
+ + 자기 자신을 전송 대상(귓속말 대상)에 추가하려는 경우
 
 자기 자신에게는 메시지를 보낼 수 없다는 메시지를 띄운다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image23.png)  
   
- **4** 현재 있는 방과 같은 방으로 이동하려고 시도할 경우 
+ + 현재 있는 방과 같은 방으로 이동하려고 시도할 경우 
 
 또다시 들어가지 못하게 막는다. (오류 방지)  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image25.png)  
