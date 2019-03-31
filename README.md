@@ -23,6 +23,8 @@
 -  전체적인  디자인 의 워크플로
 
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image75.png)
+
+ ---------------------------------------
  
 - 화면 디자인
 
@@ -46,9 +48,16 @@
 코드 전송 버튼을 누르면 사용자가 색깔로 구별된 프로그램 코드를 전송할 수 있다. (snippet)
 6. 탭 닫기 버튼을 누르면 로그아웃이 된다.
 
+---------------------------------------
+
 - 프로토콜
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image102.png)
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image100.png)
+
+
+---------------------------------------
+
+
 - 서버 기능별  컴포넌트
 
 | 기능 | 컴포넌트 |
@@ -81,11 +90,13 @@ body-parser와 router는 html파일에서 넘어온 정보를 분석 후 동작�
 2. 코드의 모듈화: 서버의 코드는 한 파일에 모두 들어가 있지 않고 기능별로 쪼개져 있다.
 
 
-
+---------------------------------------
 
 
 - 코드의 구성도, 코드 컴포넌트별 기능 정리
-**클라이언트**
+
+**클라이언트**      
+
 | **파일** | **기능** |
 | --- | --- |
 | error.html | 404에러가 발생할 때 보여주는 화면이다. |
@@ -95,7 +106,8 @@ body-parser와 router는 html파일에서 넘어온 정보를 분석 후 동작�
 | sign\_up.html | 회원가입 화면이다. 서버와 socket.io를 이용하여 통신하며 사용자 데이터베이스에 아이디 중복확인, 닉네임 중복확인, 회원가입을 위해 접근한다. |
 | wrong\_access.html | 로그인이 되지 않은 사용자가 채팅 서버에 접속했을 경우 보여주는 화면이다. |
 
-**서버**
+**서버**      
+
 | **파일** | **기능** |
 | --- | --- |
 | chatManager.js | 채팅을 관리하는 모듈이다.욕설 필터, 귓속말, 방에서 대화, 방 퇴장, 방 생성, 방 입장, 방 목록 관리, 사용자 정보가 등록된 세션 조회/삽입/수정 기능이 구현되어 있다. |
@@ -106,7 +118,12 @@ body-parser와 router는 html파일에서 넘어온 정보를 분석 후 동작�
 | userManager.js | dbExecute.js의 메서드를 이용하는 모듈이다. 데이터베이스에 접근하여 사용자 로그인/회원가입을 수행하며, 사용자 정보를 세션에 등록할 수 있게 하는 모듈이다. |
 | Utils.js | 서버로그를 관리하는 모듈이다. 콘솔 창과 로그파일에 서버 기록(정보, 에러)을 남긴다. |
 
-코드 워크 플로
+
+
+---------------------------------------
+
+
+- 코드 워크 플로
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image81.png)
 
 ## 설계 프로젝트 결과
@@ -118,18 +135,18 @@ body-parser와 router는 html파일에서 넘어온 정보를 분석 후 동작�
 서버를 실행하기 전에 dbExcute.js 파일에서 MySQL서버의 비밀번호가 현재 비밀번호가 맞는지 확인한다.
 
 
-2. 서버 실행
+2. 서버 실행  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image84.png)
 main.js를 실행한다. main.js를 실행하면 MySQL 서버까지 자동으로 연결된다.
 
 
-3. 회원가입 하기
+3. 회원가입 하기  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image54.png)
 로그인 화면에서 회원가입 버튼을 누른다.
 아이디, 닉네임 중복확인을 한 후 비밀번호를 입력하고 회원 가입 버튼을 누른다.
 
 
-4. 로그인 후 채팅 페이지로 접속한 결과
+4. 로그인 후 채팅 페이지로 접속한 결과  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image85.png)
 1. 접속한 사용자의 닉네임이 보인다.
 2. 처음에 접속한 사용자는 대기실이라는 방에 입장한다.
