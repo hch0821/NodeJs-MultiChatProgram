@@ -22,33 +22,33 @@
 
 -  전체적인  디자인 의 워크플로
 
-![Alt text](/path/to/img.jpg)
+![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image75.png)
  
-- **--**** 화면 디자인**
+- 화면 디자인
 
 로그인 화면(sign\_in.html)
-
+![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image9.png)
 1. 아이디와 비밀번호가 서버의 데이터베이스와 일치할 경우 로그인이 되며, 일치하지 않을 경우 로그인이 거절된다.로그인 버튼을 누를 시 바로 메인 화면으로 이동한다.
 2. 회원가입 버튼을 누를 시 회원가입 화면으로 이동한다.
 
 회원가입 화면(sign\_up.html)
-
+![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image54.png)
 1. 회원가입 화면에서는 사용자의 개인정보를 데이터베이스에 저장하도록 하는 동작을 한다.
 2. 중복확인 버튼 클릭 시 데이터베이스에 동일 아이디나 닉네임이 있는지 확인한다.
 
 - 메인 화면(main.js)
-
+![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image78.png)
 1. 접속한 자신의 닉네임을 상단에 보여준다.
 2. 만들어진 방 목록을 보여준다.방 생성 버튼과 방 입장 버튼도 있다.
 3. 현재 접속 중인 사용자들의 목록과 인원수를 보여주며 현재 사용자가 어느 방에 있는지도 보여준다.
 4. 메시지를 전송할 때 전송 대상을 선택할 수 있어서 1:1 채팅 또는 현재 방에 있는 사람끼리 대화할 수 있다.
 5. 전송 버튼을 누르면 메시지가 전송되며, 파일 전송버튼을 누르면 파일을 전송 할 수 있다.
-
 코드 전송 버튼을 누르면 사용자가 색깔로 구별된 프로그램 코드를 전송할 수 있다. (snippet)
+6. 탭 닫기 버튼을 누르면 로그아웃이 된다.
 
-1. 나가기 버튼을 누르면 로그아웃 한다. 탭 닫기 버튼을 눌러도 로그아웃이 된다.
 - 프로토콜
-
+![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image101.png)
+![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image100.png)
 - 서버 기능별  컴포넌트
 
 | 기능 | 컴포넌트 |
