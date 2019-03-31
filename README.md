@@ -193,7 +193,7 @@ main.js를 실행한다. main.js를 실행하면 MySQL 서버까지 자동으로
 
 10. 파일 업로드
 업로드를 시험할 파일 목록: 텍스트, 이미지, 오디오, 동영상 파일을 시험해보고자 한다.
-
+![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image99.png)  
 1. 파일 업로드 시 업로드 진행 상황을 막대 게이지로 표시한다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image103.png)  
 
@@ -206,9 +206,9 @@ main.js를 실행한다. main.js를 실행하면 MySQL 서버까지 자동으로
 
 채팅 창에 사진 다운로드 버튼과 미리 보기 화면이 생긴다.  
 
-이미지를 새 탭에서 크게 볼 수도 있다.
+이미지를 새 탭에서 크게 볼 수도 있다.  
 ![](https://github.com/hch0821/NodeJs-MultiChatProgram/blob/master/images/image61.png)  
-
+  
 4. 오디오 파일 업로드 시
 
 채팅 창에 다운로드 버튼이 생기며, 바로 재생 할 수 있도록 컨트롤이 생긴다.  
