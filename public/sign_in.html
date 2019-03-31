@@ -1,0 +1,60 @@
+<!--로그인 화면-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        NODE CHAT 로그인 페이지
+    </title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        //로그인 수행
+        function signIn() {
+            var id = $("#userIdEdit").val();
+
+            var pw = $("#userPasswordEdit").val();
+
+            if (id == "" || id == undefined) {
+                alert("아이디를 입력해주세요!");
+                return;
+            }
+            if (pw == "" || pw == undefined) {
+                alert("비밀번호를 입력해주세요!");
+                return;
+            }
+            $('#signin_form').submit();
+        }
+        
+        //해당 html 파일 로드 완료시
+        $(document).ready(function() {
+
+            //엔터키가 눌리면 
+            $("#userPasswordEdit").keyup(function(key) {
+                if (key.keyCode == 13) //enter
+                {
+                    $('#signin_form').submit(); //로그인 요청
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h2>NODE CHAT ver 1.0</h2>
+    <h4>로그인</h4>
+
+    <form id="signin_form" method="post" action="/signin">
+        아이디&nbsp;&nbsp;&nbsp;&nbsp;
+        <input id="userIdEdit" name="id" type="text" maxlength="20" placeholder="user1234">
+        <br><br> 비밀번호&nbsp;
+        <input id="userPasswordEdit" name="password" type="password" maxlength="20">
+        <input type="button" onclick="signIn()" value="로그인">
+    </form>
+    <br>
+    <a href='/gotosignup'>회원 가입 하기!</a>
+</body>
+
+</html>

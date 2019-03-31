@@ -1,0 +1,476 @@
+<!--채팅 클라이언트-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="/socket.io/socket.io.js">
+
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        var socket = io();
+        var exitCheck = false;
+
+        //html 페이지가 완전히 로드된 경우 호출됨
+        $(document).ready(function() {
+            socket.emit('client is ready'); //서버에게 클라이언트가 준비되었다고 알림
+            $("#message").keyup(function(key) {
+                if (key.keyCode == 13) //엔터를 누를시
+                {
+                    sendMessage(); //서버에 메시지 전송 요청
+                }
+            });
+        });
+
+        //페이지에서 뒤로가기나 다른 곳으로 redirect 시 로그아웃 요청
+        $(window).on("unload", function(e) {
+            alert("로그아웃되었습니다. 이용해 주셔서 감사합니다.");
+            $('#curNickname').submit();
+        });
+
+        //아예 탭을 닫을 경우에 로그아웃 요청
+        window.onbeforeunload = function(e) {
+            socket.emit('main.html is closed', $('#connectedUserText').text());
+            setTimeout(checkExit, 1000); //서버에서 접속을 종료한 사용자를 세션에서 제거할때까지 기다림.
+        }
+
+        //socket.io에서 session에서 로그인 정보를 없앴는지 확인
+        function checkExit() {
+            if (exitCheck) {
+                return;
+            } else {
+                setTimeout(checkExit, 1000);
+            }
+        }
+
+        //서버에게 메시지 전송 요청(일반 메시지)
+        function sendMessage() {
+            var message = $("#message").val();
+            if (message == undefined || message == "") {
+                return;
+            }
+            var user = $('#curNickname').val();
+            var toUser = $('#sendTo :selected').val();
+            socket.emit('send message', user, message, toUser, false);
+            $("#message").val("");
+        }
+
+        //서버에게 메시지 전송 요청(자바 스크립트 코드 메시지)
+        function sendCode() {
+            var message = $("#message").val();
+            if (message == undefined || message == "") {
+                return;
+            }
+            var user = $('#curNickname').val();
+            var toUser = $('#sendTo :selected').val();
+            socket.emit('send message', user, message, toUser, true);
+            $("#message").val("");
+        }
+
+        //파일 업로드 요청을 해주는 함수
+        function uploadFile() {
+            var user = $('#curNickname').val();
+            var toUser = $('#sendTo :selected').val();
+
+            //누가 업로드 요청을 하는지 넘겨줌
+            $('#curNickname2').val(user);
+            $('#curToUser').val(toUser);
+            $("#fileSendForm").submit();
+        }
+
+        //방을 만들고 서버에 방 이름을 넘겨주는 함수
+        function createRoom() {
+            var room_name = prompt("방 이름을 입력하세요 : ", "");
+            if (room_name === null) {
+                return;
+            }
+            if (room_name == "") {
+                alert('방 이름을 입력해주세요!');
+                return;
+            } else {
+                socket.emit('create room', room_name);
+                $("#messageLog").empty();
+            }
+
+        }
+
+        //방을 입장하도록 서버에 요청하는 함수
+        function enterRoom() {
+            var room_num = $("#room_list :selected").val();
+            var room_name = $("#room_list :selected").text();
+            if (room_num == undefined) {
+                alert("방을 선택해주세요!");
+                return;
+            }
+            console.log('curRoomNum : ' + $('#curRoomNum').text());
+            if ($('#curRoomNum').text() == room_num) {
+                alert("현재 계신 방과 같은 방으로 이동할 수 없습니다!");
+                return;
+            }
+            socket.emit('join room', room_num, room_name);
+
+            $("#messageLog").empty();
+        }
+
+        //전송 대상(귓속말 대상)을 추가하는 함수
+        function addSendTo() {
+            var addedUser = $("#user_list :selected").text();
+            var addToSendTo = true;
+            if (addedUser == undefined || addedUser == "") {
+                alert("전송대상에 추가할 사용자를 선택해주세요!");
+                return;
+            }
+
+            if (addedUser == $('#curNickname').val()) {
+                alert('자기 자신에게는 메시지를 보낼 수 없습니다.');
+                addToSendTo = false;
+            }
+
+            $("#sendTo option").each(function() {
+                if ($(this).val() == addedUser) {
+                    alert('이미 전송 대상에 있는 사용자입니다.');
+                    addToSendTo = false;
+                }
+
+            });
+
+            if (addToSendTo) {
+                $('#sendTo').append($('<option>', {
+                    value: addedUser,
+                    text: addedUser
+                }));
+
+                alert('대화 대상에 ' + addedUser + '님을 추가하였습니다.');
+            }
+
+        }
+
+        //방을 나가도록 서버에게 요청하는 함수
+        function exitFromRoom() {
+            socket.emit('exit room');
+        }
+
+        //클라이언트의 ~~님의 접속을 환영합니다를 수정하라는 이벤트를 받을 시
+        socket.on('change nickname', function(session, socketid) {
+            if (session == undefined) {
+                //session이 아예 정의가 안되어있다면 사용자가 없는 것이므로 채팅 서버에 접속 시 '잘못된 접근'페이지로 redirect
+                window.location.replace('/wrong_access');
+                return;
+            }
+            if (session.user == undefined) {
+                //session의 사용자 객체가 아예 정의가 안되어있다면 사용자가 없는 것이므로 채팅 서버에 접속 시 '잘못된 접근'페이지로 redirect
+                window.location.replace('/wrong_access');
+                return;
+            }
+            if (session.user.length == 0) {
+                //session의 등록된 사용자가 없다면 사용자가 없는 것이므로 채팅 서버에 접속 시 '잘못된 접근'페이지로 redirect
+                window.location.replace('/wrong_access');
+                return;
+            }
+
+            //접속한 사용자 '~님의 접속을 환영합니다. 글자 바꾸기' 
+            for (var i = 0; i < session.user.length; i++) {
+                if (session.user[i].socketId == socketid) {
+                    $('#connectedUserText').text(session.user[i].nickname.toString());
+                    $('#curNickname').val(session.user[i].nickname.toString());
+                    break;
+                }
+            }
+            console.dir(session.user);
+
+            socket.emit('finished change nickname');
+        });
+
+        //main.js-- socket.io에서 session에서 로그인 정보를 없앴는지 확인한다.
+        socket.on('ok exit', function() {
+            exitCheck = true;
+        });
+
+        //잘못된 접근 이벤트를 받을 시
+        socket.on('wrong access', function() {
+            window.location.href = '/wrong_access';
+        });
+
+        //사용자 목록을 갱신하라는 이벤트를 받을 시
+        socket.on('update user list', function(session) {
+            $('#user_list').empty();
+            $('#user_pos_list').empty();
+            for (var i = 0; i < session.user.length; i++) {
+
+                var room_num = session.user[i].room_num;
+                var room_name;
+
+                if (room_num == 0) {
+                    room_name = '대기실';
+                } else {
+                    room_name = room_num + '번';
+                }
+
+                $('#user_list').append($('<option>', {
+                    value: session.user[i].id,
+                    text: session.user[i].nickname
+                }));
+
+                $('#user_pos_list').append($('<option>', {
+                    text: room_name
+                }));
+
+            }
+            $('#num_user').text(session.user.length);
+        });
+
+        //메시지를 받으라는 이벤트를 받을 시
+        socket.on('receive message', function(message, mode) {
+            console.log(mode);
+
+            if (mode == 'notif') { //서버 공지 메시지를 받을 경우
+                $('#messageLog').append('<div style="color:darkmagenta;font-style:oblique;font-size:small;">' + message + '</div>');
+            } else if (mode == 'whisper') { //귓속말 메시지를 받을 경우
+                $('#messageLog').append('<div style="color:chocolate;font-style:oblique;">' + message + '</div>');
+            } else { //일반 메시지를 받을 경우
+                $('#messageLog').append(message + '<br>');
+            }
+            //가장 밑으로 스크롤
+            $('#messageLog').animate({
+                scrollTop: $('#messageLog').get(0).scrollHeight
+            }, 0);
+        });
+
+        //귓속말 대상이 접속중이지 않으면 사용자에게 알리고 전송 대상에서 자동 삭제
+        socket.on('toUser is not connected', function(toUser) {
+            alert(toUser + '님은 현재 접속중이지 않습니다. 전송 대상에서 삭제합니다.');
+            $('#sendTo').find('[value=' + toUser + ']').remove();
+            $('#sendTo option')[0].selected = true;
+
+        });
+        //재연결 이벤트를 받을 시
+        socket.on('redirect', function(address, message) {
+            window.location.href = address; //해당 주소로 재연결
+            if (message == '' || message != undefined) {
+                alert(message);
+            }
+        });
+
+        //방 목록을 갱신하라는 이벤트를 받을 시
+        socket.on('update room list', function(roomList) {
+            $('#room_num').empty();
+            $('#room_list').empty();
+            $('#room_num_user').empty();
+            for (var i = 0; i < roomList.length; i++) {
+                $('#room_num').append($('<option>', {
+                    text: roomList[i].room_num
+                }));
+                $('#room_list').append($('<option>', {
+                    value: roomList[i].room_num,
+                    text: roomList[i].room_name
+                }));
+
+                $('#room_num_user').append($('<option>', {
+                    text: roomList[i].room_num_user
+                }));
+            }
+
+        });
+
+        //방에 입장하거나 나갈 경우 현재 방 이름, 방 번호를 갱신
+        socket.on('complete join or leave room', function(room_num, room_name) {
+            $("#curRoomNum").text(room_num);
+            $("#curRoomName").text(room_name);
+
+            if (room_num == 0) {
+                $('#exitRoomB').hide();
+            } else {
+                $('#exitRoomB').show();
+            }
+        });
+
+
+        //파일을 받으라는 이벤트가 올 시
+        socket.on('receive file', function(message, fileInfo, mode) {
+
+            console.dir(fileInfo);
+            var fileName = fileInfo.fileName;
+            var mimeType = fileInfo.mimeType;
+
+            var appendString = "";
+
+            if (mode == 'whisper') { //파일을 귓속말로 보낼 때
+                appendString = appendString.concat('<div style="color:chocolate;font-style:oblique;">' + message + '</div>');
+                appendString = appendString.concat('<div style="background-color:lightsalmon;border-radius:5px;border-style: groove;width:70%">');
+            } else { //파일을 해당 방으로 보낼 때
+                appendString = appendString.concat(message + '<br>');
+                appendString = appendString.concat('<div style="background-color:lightgray;border-radius:5px;border-style: groove;width:70%">');
+            }
+
+            //파일을 다운 받을 수 있도록 하는 버튼 생성-->action에 파일이름을 넘겨줌
+            appendString =
+                appendString.concat(' <form method="get" action="/down/' + fileName + '" target="_blank" > <input type = "submit" value = "' + fileName + '"> <br></form><br>');
+            console.log('mimeType : ' + mimeType);
+
+            var mimeTypeParts = mimeType.split('/');
+            var fileType = mimeTypeParts[0]; //파일의 메인 mime type
+            var fileSubType = mimeTypeParts[1]; //sub mime type
+            if (mimeType == 'video/mp4') { //파일이 비디오(.mp4)일 경우
+                //비디오를 볼 수 있게 video 태그를 생성하고 src를 이용하여 서버에 스트림 요청
+                appendString =
+                    appendString.concat('<video controls><source src="http://localhost:3003/stream/' + fileName + '::' + fileType + '::' + fileSubType + '" type="' + mimeType + '"></video>');
+            } else if (fileType == 'audio') { //파일이 오디오일 경우
+                //오디오를 들을 수 있게 audio 태그를 생성하고 src를 이용하여 서버에 스트림 요청
+                appendString =
+                    appendString.concat('<audio controls><source src="http://localhost:3003/stream/' + fileName + '::' + fileType + '::' + fileSubType + '" type="' + mimeType + '"></audio>');
+            } else if (fileType == 'image') { //파일이 이미지일 경우
+                //이미지를 볼 수 있게 img 태그를 생성하고 서버에 이미지 파일을 요청 
+                appendString =
+                    appendString.concat('<img src="/uploads/' + fileName + '">');
+            } else if (mimeType == 'text/plain') { //파일이 텍스트 일경우(.txt)
+                //iframe 태그에서 텍스트 파일의 내용을 볼 수 있게 요청함
+                appendString =
+                    appendString.concat('<iframe width="80%" src="http://localhost:3003/readText/' + fileName + '"></iframe>');
+            }
+            appendString =
+                appendString.concat('<br>');
+            appendString =
+                appendString.concat('</div>');
+            console.log('appendString : ' + appendString);
+            $('#messageLog').append(appendString);
+            //가장 밑으로 스크롤
+            $('#messageLog').animate({
+                scrollTop: $('#messageLog').get(0).scrollHeight
+            }, 0);
+
+            $('#file').val('');
+            $('#file').prop('disabled', false);
+        });
+
+        //파일 업로드가 진행중일 때 진행 막대 표시
+        socket.on('upload progress', function(curProgress) {
+            var progress = Math.floor(curProgress);
+            console.log(progress);
+            $('#progress').width(progress + '%');
+            $('#progress').text(progress + "% 업로드 됨");
+            if (progress == 100) {
+                $('#progress').text('');
+            }
+        });
+
+        //파일 업로드가 실패하거나 취소 시 업로드 진행률, 파일 업로드 form 초기화
+        socket.on('upload aborted', function() {
+            $('#progress').text('');
+            $('#file').val('');
+
+        });
+
+    </script>
+</head>
+
+<body>
+    <div class="clientBorder">
+        <h2>NODE CHAT ver 1.0</h2>
+        <div class="connectedUserInfo">
+            <span id="connectedUserText">
+            사용자 
+            </span> 님의 접속을 환영합니다!
+        </div>
+
+        <table>
+            <tr>
+                <td id="td1">
+                    <div class="border">
+                        <div>
+
+                            <h4>방번호 :
+                                <span id="curRoomNum"></span> 방제목: <span id="curRoomName"></span>
+                                <input type="button" id="exitRoomB" onclick="exitFromRoom()" value="방에서 나가기"></h4>
+
+                        </div>
+                        <div id="messageLog">
+                        </div>
+                    </div>
+                    <div class="border">
+
+                        <div id="messageBox">
+
+                            <b>전송 대상</b>
+                            <select id="sendTo">
+                             <option value="curRoom">현재 방</option>
+                            </select>
+                            <p>
+
+                                <b>메시지 입력</b><br>
+                                <textarea id="message" cols="40" rows="5"></textarea><br><br>
+                                <input type="submit" id="sendB" value='메시지 전송' onclick="sendMessage()">
+                                <input type="submit" id="codeSendB" value='코드 전송(javascript)' onclick="sendCode()">
+                                <p></p>
+                                <form id="fileSendForm" action="/upload" target="_blank" enctype="multipart/form-data" method="post">
+                                    <input type="text" id="curNickname2" name="curNickname" hidden>
+                                    <input type="text" id="curToUser" name="curToUser" hidden>
+                                    <input id="file" type="file" name="filetoupload" value="파일 전송하기" onchange="uploadFile()"><br>
+                                </form>
+
+                                <br>
+                                <div style="background-color: lightblue; width:80%;margin-left:10%" id="progress100">
+                                    <div style="background-color: cadetblue;" id="progress" style="text-align: center;">
+                                    </div>
+                                </div>
+                                <p>
+                        </div>
+                    </div>
+                </td>
+                <td id="td2">
+                    <div class="border">
+                        <h4>방 목록</h4>
+                        <div id="listContainer">
+                            <form>
+                                <table>
+                                    <tr>
+                                        <th id="td22">방 번호</th>
+                                        <th id="td11">방 이름</th>
+                                        <th id="td22">인원수</th>
+                                    </tr>
+                                    <tr>
+                                        <td id="td22"><select class="extraList" id="room_num" size="100" readonly></select></td>
+                                        <td id="td11"><select id="room_list" size="100"></select></td>
+                                        <td id="td22"><select class="extraList" id="room_num_user" size="100" readonly></select></td>
+                                    </tr>
+                                </table>
+                                <p>
+                                    <button type="button" onclick="enterRoom()">방 입장</button>
+                                    <button type="button" onclick="createRoom()">
+                                        방 만들기
+                                    </button>
+                            </form>
+                        </div>
+                    </div>
+                    <p>
+                        <p>
+                            <div class="border">
+                                <h4>사용자 목록<b>(<span id="num_user">0</span>명)</b></h4>
+                                <div id="listContainer">
+                                    <table>
+                                        <tr>
+                                            <th id="td1">사용자</th>
+                                            <th id="td2">위치</th>
+                                        </tr>
+                                        <tr>
+                                            <td id="td1"><select id="user_list" size="100"></select></td>
+                                            <td id="td2"><select class="extraList" id="user_pos_list" size="100"></select></td>
+                                        </tr>
+                                    </table>
+                                    <p>
+                                        <button type="button" onclick="addSendTo()">전송 대상 추가</button>
+                                </div>
+                            </div>
+                            <form id="exit" method="post" action='/signout'>
+                                <input type="text" id="curNickname" name="curNickname" hidden>
+                                <input type="submit" value="나가기">
+                            </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
