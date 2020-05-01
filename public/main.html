@@ -5,9 +5,8 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="//cdn.polyfill.io/v1/polyfill.js" async defer></script>
     <script src="/socket.io/socket.io.js">
-
-
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
@@ -23,6 +22,10 @@
                     sendMessage(); //서버에 메시지 전송 요청
                 }
             });
+            // $("#fileSendForm").on('submit', function(e){
+            //     // e.preventDefault();
+            //     // alert('upload start!')
+            // })
         });
 
         //페이지에서 뒤로가기나 다른 곳으로 redirect 시 로그아웃 요청
@@ -74,6 +77,10 @@
         function uploadFile() {
             var user = $('#curNickname').val();
             var toUser = $('#sendTo :selected').val();
+            
+            if(user === null || toUser === null || $("#file").val() === ''){
+                return
+            }
 
             //누가 업로드 요청을 하는지 넘겨줌
             $('#curNickname2').val(user);
@@ -313,7 +320,8 @@
             var mimeTypeParts = mimeType.split('/');
             var fileType = mimeTypeParts[0]; //파일의 메인 mime type
             var fileSubType = mimeTypeParts[1]; //sub mime type
-            if (mimeType == 'video/mp4') { //파일이 비디오(.mp4)일 경우
+            console.log('mimeTypeParts:', mimeTypeParts)
+            if (fileType === 'video') { //파일이 비디오(.mp4)일 경우
                 //비디오를 볼 수 있게 video 태그를 생성하고 src를 이용하여 서버에 스트림 요청
                 appendString =
                     appendString.concat('<video controls><source src="http://localhost:3003/stream/' + fileName + '::' + fileType + '::' + fileSubType + '" type="' + mimeType + '"></video>');
@@ -321,7 +329,8 @@
                 //오디오를 들을 수 있게 audio 태그를 생성하고 src를 이용하여 서버에 스트림 요청
                 appendString =
                     appendString.concat('<audio controls><source src="http://localhost:3003/stream/' + fileName + '::' + fileType + '::' + fileSubType + '" type="' + mimeType + '"></audio>');
-            } else if (fileType == 'image') { //파일이 이미지일 경우
+            } else if (fileType === 'image')
+            { //파일이 이미지일 경우
                 //이미지를 볼 수 있게 img 태그를 생성하고 서버에 이미지 파일을 요청 
                 appendString =
                     appendString.concat('<img src="/uploads/' + fileName + '">');
@@ -348,7 +357,7 @@
         //파일 업로드가 진행중일 때 진행 막대 표시
         socket.on('upload progress', function(curProgress) {
             var progress = Math.floor(curProgress);
-            console.log(progress);
+            // console.log(progress);
             $('#progress').width(progress + '%');
             $('#progress').text(progress + "% 업로드 됨");
             if (progress == 100) {

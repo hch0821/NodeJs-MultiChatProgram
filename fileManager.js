@@ -89,7 +89,9 @@ exports.initFileRouter = function () {
             console.log('upload end');
             var sendFileInfo = {}; //클라이언트로 보낼 업로드된 파일의 정보
             if (!fs.existsSync(__dirname + '/public/uploads')) {
-                fs.mkdir(__dirname + '/public/uploads');
+                fs.mkdir(__dirname + '/public/uploads', function(error){
+                    Utils.logger.error('폴더 만들기 실패 :', error);
+                });
             }
 
             var oldpath; //업로드된 파일의 임시 위치
@@ -123,7 +125,7 @@ exports.initFileRouter = function () {
                 }
                 //귓속말 상대가 지정되어있지 않다면 방이나 대기실로 보내기
                 else {
-                    io.to(room).emit('receive file', Utils.timeStampFormat2() + userNickname + ": ", sendFileInfo);
+                    io.to(room).emit('receive file', Utils.timeStampFormat2() + userNickname + ": ", sendFileInfo, 'toRoom');
                 }
             }
             socketId = undefined;
