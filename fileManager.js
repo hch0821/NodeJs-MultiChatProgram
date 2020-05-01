@@ -19,7 +19,9 @@ exports.init = function (p_app, p_io, p_router) {
     io = p_io;
     router = p_router;
     if (!fs.existsSync(__dirname + '/temp')) {
-        fs.mkdir(__dirname + '/temp');
+        fs.mkdir(__dirname + '/temp', function(err){
+            console.log(err)
+        });
     }
 }
 

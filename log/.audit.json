@@ -3,27 +3,12 @@
         "days": true,
         "amount": 14
     },
-    "auditLog": "E:\\Programming\\NetworkProgramming\\chat_prog\\log/.audit.json",
+    "auditLog": "F:\\Programming\\NodeJs-MultiChatProgram\\log/.audit.json",
     "files": [
         {
-            "date": 1554005406191,
-            "name": "E:\\Programming\\NetworkProgramming\\chat_prog\\log\\server-2019-03-31-13.log",
-            "hash": "c186f035b0afc09ce49c2d730e1c3016"
-        },
-        {
-            "date": 1554005412142,
-            "name": "E:\\Programming\\NetworkProgramming\\chat_prog\\log\\server-2019-03-31-13.log",
-            "hash": "0e64ffb8e7f2dff89f088e41e36ed244"
-        },
-        {
-            "date": 1554005931786,
-            "name": "E:\\Programming\\NetworkProgramming\\chat_prog\\log\\server-2019-03-31-13.log",
-            "hash": "2ad5d03d71c3df3a44b79dcab93f93ec"
-        },
-        {
-            "date": 1554006078973,
-            "name": "E:\\Programming\\NetworkProgramming\\chat_prog\\log\\server-2019-03-31-13.log",
-            "hash": "89026f4dc772b6c1e10aa5c46b0676d0"
+            "date": 1588338081038,
+            "name": "F:\\Programming\\NodeJs-MultiChatProgram\\log\\server-2020-05-01-22.log",
+            "hash": "756a6d3b62888e994ed3fd5f2c583959"
         }
     ]
 }
